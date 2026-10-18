@@ -25,7 +25,7 @@ h1{font-family:var(--serif);font-weight:600;font-size:40px;line-height:1.08;marg
 .deflag{display:inline-block;width:46px;height:28px;border-radius:5px;margin-right:14px;vertical-align:-2px;background:linear-gradient(180deg,#000 0 33.34%,#dd0000 33.34% 66.67%,#ffce00 66.67%);box-shadow:0 2px 6px rgba(0,0,0,.18)}
 .lede{margin:0;color:var(--sub);font-size:15px}
 main .wrap{padding-top:32px;padding-bottom:48px}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.grid{display:grid;grid-template-columns:minmax(0,380px);gap:18px}
 .lvl{position:relative;display:block;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 22px 20px;text-decoration:none;color:inherit;box-shadow:0 1px 2px rgba(16,24,40,.05);transition:transform .15s,box-shadow .15s,border-color .15s}
 a.lvl:hover{transform:translateY(-2px);border-color:var(--ink-2);box-shadow:0 10px 24px -12px rgba(13,92,99,.45)}
 a.lvl:focus-visible{outline:3px solid var(--ink-2);outline-offset:2px}
@@ -33,9 +33,6 @@ a.lvl:focus-visible{outline:3px solid var(--ink-2);outline-offset:2px}
 .lvl h2{font-family:var(--serif);font-size:22px;font-weight:600;margin:14px 0 4px;color:var(--title)}
 .lvl p{margin:0;color:var(--sub);font-size:14px}
 .go{display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-weight:600;font-size:14px;color:var(--ink)}
-.soon{opacity:.72}
-.soon .badge{background:#c9c3b6}
-.pill{position:absolute;top:18px;right:18px;font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#7a6a45;background:#f3ecdc;padding:3px 9px;border-radius:999px}
 .stats{display:flex;gap:14px;margin-top:12px;font-size:13px;color:var(--muted)}
 .stats b{color:var(--title);font-weight:600}
 footer{color:var(--sub);font-size:13px;padding-top:26px}
@@ -46,7 +43,7 @@ footer{color:var(--sub);font-size:13px;padding-top:26px}
 <div class="flag"></div>
 <header class="mast"><div class="wrap">
   <div class="who"><span class="eyebrow">Deutsch Vocabulary</span><span class="author"><span class="avatar">AT</span>Ahsan Tanveer</span></div>
-  <h1><span class="deflag" aria-hidden="true"></span>Wortschatz nach Niveau</h1>
+  <h1><span class="deflag" aria-hidden="true"></span>Deutscher Wortschatz</h1>
   <p class="lede">Vokabeln mit Verbformen, Kasus, Präpositionen, Synonymen, Beispielsätzen und Aussprache.</p>
 </div></header>
 <main><div class="wrap">
@@ -58,19 +55,6 @@ footer{color:var(--sub);font-size:13px;padding-top:26px}
       <div class="stats"><span><b>870</b> Wörter</span><span><b>242</b> Verben</span><span><b>480</b> Nomen</span></div>
       <span class="go">Öffnen &rarr;</span>
     </a>
-    <div class="lvl soon" aria-disabled="true">
-      <span class="pill">Kommt bald</span>
-      <span class="badge">B2</span>
-      <h2>Niveau B2</h2>
-      <p>In Vorbereitung</p>
-    </div>
-    <div class="lvl soon" aria-disabled="true">
-      <span class="pill">Kommt bald</span>
-      <span class="badge">C1</span>
-      <h2>Niveau C1</h2>
-      <p>In Vorbereitung</p>
-    </div>
-  </div>
   <footer>© Ahsan Tanveer</footer>
 </div></main>
 </body>
