@@ -418,7 +418,8 @@ const GCATS = [
   ["Wortstellung", ["stellung","nicht"]],
   ["Nomen, Artikel & Pronomen", ["genitiv","pronomen","artikelwort","irgend"]],
   ["Adjektive & Präpositionen", ["adjektiv","komparation","partizip","praep"]]];
-{ const nn = id => { const g = GR.find(x => x.id === id); const n = parseInt(g.no); return isNaN(n) ? 999 : n; }; GCATS.forEach(c => c[1].sort((x,y) => nn(x) - nn(y))); }
+const GORDER = [];
+{ const nn = id => { const g = GR.find(x => x.id === id); const n = parseInt(g.no); return isNaN(n) ? 999 : n; }; GCATS.forEach(c => c[1].sort((x,y) => nn(x) - nn(y))); GORDER.push(...GR.map(g=>g.id).sort((x,y) => nn(x) - nn(y))); }
 const GMAIN = {k2:2, nebensatz:2, genitiv:2, pronomen:2, komparation:2, relativ:2, futur:2, stellung:2, adjektiv:3, praep:2};
 let gsel = ""; try { gsel = localStorage.getItem("wb-gram") || ""; } catch(e) {}
 document.addEventListener("click", e => { const b = e.target.closest("[data-g]"); if(!b) return; gsel = b.dataset.g; try{ localStorage.setItem("wb-gram", gsel); }catch(err){} render(); const s = document.getElementById("sheet"); if(s){ const y = s.getBoundingClientRect().top + scrollY - (innerWidth>820 ? 120 : 70); if(scrollY > y) scrollTo({top:y}); } });
@@ -541,17 +542,17 @@ function render(){
   const rows = all.filter(hit);
   if(cur==="G"){
     $("#ctitle").textContent = "Grammatik B1";
-    $("#csub").textContent = `${GR.length} Themen in ${GCATS.length} Gruppen · nach dem B1-Syllabus`;
+    $("#csub").textContent = `${GR.length} Themen · nach dem B1-Syllabus`;
     $("#chips").innerHTML = ""; $("#chips").hidden = true;
     const byId = Object.fromEntries(GR.map(g => [g.id, g]));
-    const order = GCATS.flatMap(c => c[1]);
+    const order = GORDER;
     if(!byId[gsel]) gsel = order[0];
     const g = byId[gsel], pos = order.indexOf(gsel), prev = order[pos-1], next = order[pos+1];
     const bf = s => esc(s).replace(/\*\*(.+?)\*\*/g, "<b>$1</b>");
     const tbl = tb => `<div class="gtw">${tb.cap ? `<div class="gcap">${esc(tb.cap)}</div>` : ""}<div class="gt" style="grid-template-columns:repeat(${tb.head.length},auto)">${tb.head.map(h=>`<div class="gth">${esc(h)}</div>`).join("")}${tb.rows.map((r,ri)=>r.map((c,j)=>`<div class="gtd${j===0&&tb.head[0]===""?" rh":""}${ri===tb.rows.length-1?" last":""}">${bf(c)}</div>`).join("")).join("")}</div></div>`;
     const nm = GMAIN[g.id] || 1, mainT = g.tables.slice(0,nm), moreT = g.tables.slice(nm);
-    const nav = GCATS.map(([cat, ids]) => `<div class="gcat">${esc(cat)}</div>` + ids.map(id => `<button class="gitem" data-g="${id}" aria-current="${id===gsel}"><span class="gn">${esc(byId[id].no)}</span>${esc(byId[id].t)}</button>`).join("")).join("");
-    const sel = `<select id="gsel" aria-label="Thema wählen">${GCATS.map(([cat, ids]) => `<optgroup label="${esc(cat)}">${ids.map(id => `<option value="${id}"${id===gsel?" selected":""}>${esc(byId[id].no)} · ${esc(byId[id].t)}</option>`).join("")}</optgroup>`).join("")}</select>`;
+    const nav = GORDER.map(id => `<button class="gitem" data-g="${id}" aria-current="${id===gsel}"><span class="gn">${esc(byId[id].no)}</span>${esc(byId[id].t)}</button>`).join("");
+    const sel = `<select id="gsel" aria-label="Thema wählen">${GORDER.map(id => `<option value="${id}"${id===gsel?" selected":""}>${esc(byId[id].no)} · ${esc(byId[id].t)}</option>`).join("")}</select>`;
     $("#sheet").innerHTML = `<div class="gwrap"><aside class="gnav">${nav}</aside><div class="gmain">${sel}<section class="gcard"><header><span class="gno">${esc(g.no)}</span><h3>${esc(g.t)}</h3><span class="gcatl">${esc(GCATS.find(c=>c[1].includes(g.id))[0])}</span></header>` +
       `<div class="grule"><b>Regel</b>${bf(g.s)}</div>` + mainT.map(tbl).join("") +
       (g.pts.length ? `<ul class="gpts">${g.pts.map(p=>`<li>${bf(p)}</li>`).join("")}</ul>` : "") +
