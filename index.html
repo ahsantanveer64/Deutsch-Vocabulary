@@ -50,12 +50,24 @@ a.lvl:focus-visible{outline:3px solid var(--ink-2);outline-offset:2px}
 .author b{font-weight:600}
 footer{color:var(--sub);font-size:13px;padding-top:26px}
 @media (max-width:760px){.grid{grid-template-columns:1fr}h1{font-size:30px}.deflag{width:36px;height:22px;margin-right:10px}.wrap{padding:0 16px}}
+[data-theme="navy"]{--page:#d9e1f1;--ink:#1d3c8f;--ink-2:#3559c7;--ink-soft:#eaf0ff;--mast-a:#dfe7ff;--mast-b:#f7f9ff;--title:#0f1a3a;--head-bg:#eef2fb;--head-fg:#2a3a63;--head-line:#c9d3ea;--hover:#f8faff;--tint:#fbfcff;--tint-h:#f3f6ff;--syn:#2f6f8f}
+[data-theme="petrol"]{--page:#e2d8c3;--ink:#0d5c63;--ink-2:#14838c;--ink-soft:#e3f2f1;--mast-a:#d9efe9;--mast-b:#fbf9f4;--title:#12302f;--head-bg:#edf4f1;--head-fg:#1f4b49;--head-line:#c3dcd5;--hover:#f6fbf9;--tint:#fcfbf7;--tint-h:#eef6f3;--syn:#8a5a14;--line:#e8e4da;--line-strong:#d8d2c4}
+[data-theme="wald"]{--page:#d9e2cb;--ink:#2f5d3a;--ink-2:#4a7d52;--ink-soft:#e8f1e4;--mast-a:#e1edd6;--mast-b:#fafbf6;--title:#1d2f20;--head-bg:#eef3e8;--head-fg:#2f4a33;--head-line:#cddcc3;--hover:#f7faf3;--tint:#fbfcf8;--tint-h:#f0f5ea;--syn:#7a5326;--line:#e5e8dd;--line-strong:#d3d8c8}
+[data-theme="graphit"]{--page:#dfdce1;--ink:#262a33;--ink-2:#d1495b;--ink-soft:#f1eef0;--mast-a:#f6dde1;--mast-b:#fafafa;--title:#16181d;--head-bg:#f1f1f3;--head-fg:#3a3f4b;--head-line:#d6d7dc;--hover:#fafafb;--tint:#fcfcfd;--tint-h:#f4f4f6;--syn:#b23a4c}
+[data-theme="pflaume"]{--page:#e4d8ee;--ink:#4b2a6b;--ink-2:#7a4aa8;--ink-soft:#f0e9f7;--mast-a:#eadff6;--mast-b:#fcfbfd;--title:#24142f;--head-bg:#f3eef8;--head-fg:#43305a;--head-line:#ddd0ea;--hover:#fbf9fd;--tint:#fdfcfe;--tint-h:#f5f0fa;--syn:#2e7a6f}
+.themes{display:inline-flex;align-items:center;gap:6px;margin-left:auto}
+.themes span{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-right:2px}
+.sw{appearance:none;width:18px;height:18px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #d8d2c4;cursor:pointer;padding:0}
+.sw[aria-pressed="true"]{box-shadow:0 0 0 2px var(--ink)}
+.sw:focus-visible{outline:2px solid var(--ink-2);outline-offset:2px}
+@media (max-width:600px){.themes{margin-left:0}}
 </style>
+<script>try{document.documentElement.dataset.theme=localStorage.getItem("wb-theme")||"petrol"}catch(e){document.documentElement.dataset.theme="petrol"}</script>
 </head>
 <body>
 <div class="flag"></div>
 <header class="mast"><div class="wrap">
-  <div class="who"><span class="eyebrow">Deutsch lernen</span><span class="author"><span class="avatar">AT</span><span class="by">Erstellt von</span><b>Ahsan Tanveer</b></span></div>
+  <div class="who"><span class="eyebrow">Deutsch lernen</span><span class="author"><span class="avatar">AT</span><span class="by">Erstellt von</span><b>Ahsan Tanveer</b></span><span class="themes" id="themes"><span>Farbe</span><button class="sw" data-t="navy" style="background:#1d3c8f" title="Navy"></button><button class="sw" data-t="petrol" style="background:#0d5c63" title="Petrol &amp; Sand"></button><button class="sw" data-t="wald" style="background:#2f5d3a" title="Waldgrün"></button><button class="sw" data-t="graphit" style="background:linear-gradient(135deg,#262a33 50%,#d1495b 50%)" title="Graphit &amp; Koralle"></button><button class="sw" data-t="pflaume" style="background:#4b2a6b" title="Pflaume"></button></span></div>
   <h1><span class="deflag" aria-hidden="true"></span>Deutsch: Wortschatz &amp; Grammatik</h1>
   <p class="lede">Lernmaterial aus meinem Kurs: Wortschatz, Synonyme, Verben mit Präpositionen und Grammatik, alles mit Beispielsätzen und Aussprache.</p>
 </div></header>
@@ -73,5 +85,10 @@ footer{color:var(--sub);font-size:13px;padding-top:26px}
   </div>
   <footer>© 2026 Ahsan Tanveer</footer>
 </div></main>
+<script>
+(function(){var cur=document.documentElement.dataset.theme;
+function set(x){document.documentElement.dataset.theme=x;document.querySelectorAll(".sw").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.t===x)});try{localStorage.setItem("wb-theme",x)}catch(e){}}
+document.getElementById("themes").addEventListener("click",function(e){var b=e.target.closest(".sw");if(b)set(b.dataset.t)});set(cur);})();
+</script>
 </body>
 </html>
