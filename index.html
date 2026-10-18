@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Deutsch Vocabulary · Ahsan Tanveer</title>
+<title>Deutsch · Ahsan Tanveer</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap">
@@ -25,7 +25,7 @@ h1{font-family:var(--serif);font-weight:600;font-size:40px;line-height:1.08;marg
 .deflag{display:inline-block;width:46px;height:28px;border-radius:5px;margin-right:14px;vertical-align:-2px;background:linear-gradient(180deg,#000 0 33.34%,#dd0000 33.34% 66.67%,#ffce00 66.67%);box-shadow:0 2px 6px rgba(0,0,0,.18)}
 .lede{margin:0;color:var(--sub);font-size:15px}
 main .wrap{padding-top:32px;padding-bottom:48px}
-.grid{display:grid;grid-template-columns:minmax(0,380px);gap:18px}
+.grid{display:grid;grid-template-columns:minmax(0,560px);gap:18px}
 .lvl{position:relative;display:block;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 22px 20px;text-decoration:none;color:inherit;box-shadow:0 1px 2px rgba(16,24,40,.05);transition:transform .15s,box-shadow .15s,border-color .15s}
 a.lvl:hover{transform:translateY(-2px);border-color:var(--ink-2);box-shadow:0 10px 24px -12px rgba(13,92,99,.45)}
 a.lvl:focus-visible{outline:3px solid var(--ink-2);outline-offset:2px}
@@ -35,6 +35,17 @@ a.lvl:focus-visible{outline:3px solid var(--ink-2);outline-offset:2px}
 .go{display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-weight:600;font-size:14px;color:var(--ink)}
 .stats{display:flex;gap:14px;margin-top:12px;font-size:13px;color:var(--muted)}
 .stats b{color:var(--title);font-weight:600}
+.lvl .top{display:flex;align-items:center;gap:16px;text-decoration:none;color:inherit}
+.lvl .top h2{margin:0 0 2px}
+.lvl .top .go{margin:0 0 0 auto}
+.lvl .top:hover .go{text-decoration:underline}
+.parts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:18px}
+.part{display:block;border:1px solid var(--line);border-radius:12px;padding:12px 14px;text-decoration:none;color:inherit;transition:border-color .15s,transform .15s}
+.part:hover{border-color:var(--ink-2);transform:translateY(-1px)}
+.part b{font-family:var(--serif);font-size:24px;font-weight:600;color:var(--ink);line-height:1}
+.part span{display:block;margin-top:4px;font-weight:600;color:var(--title)}
+.part small{display:block;margin-top:2px;font-size:12.5px;color:var(--sub);line-height:1.4}
+@media (max-width:480px){.parts{grid-template-columns:1fr}.lvl .top .go{display:none}}
 footer{color:var(--sub);font-size:13px;padding-top:26px}
 @media (max-width:760px){.grid{grid-template-columns:1fr}h1{font-size:30px}.deflag{width:36px;height:22px;margin-right:10px}.wrap{padding:0 16px}}
 </style>
@@ -42,19 +53,22 @@ footer{color:var(--sub);font-size:13px;padding-top:26px}
 <body>
 <div class="flag"></div>
 <header class="mast"><div class="wrap">
-  <div class="who"><span class="eyebrow">Deutsch Vocabulary</span><span class="author"><span class="avatar">AT</span>Ahsan Tanveer</span></div>
-  <h1><span class="deflag" aria-hidden="true"></span>Deutscher Wortschatz</h1>
-  <p class="lede">Vokabeln mit Verbformen, Kasus, Präpositionen, Synonymen, Beispielsätzen und Aussprache.</p>
+  <div class="who"><span class="eyebrow">Deutsch lernen</span><span class="author"><span class="avatar">AT</span>Ahsan Tanveer</span></div>
+  <h1><span class="deflag" aria-hidden="true"></span>Deutsch: Wortschatz &amp; Grammatik</h1>
+  <p class="lede">Lernmaterial aus meinem Kurs: Wortschatz, Synonyme, Verben mit Präpositionen und Grammatik, alles mit Beispielsätzen und Aussprache.</p>
 </div></header>
 <main><div class="wrap">
   <div class="grid">
-    <a class="lvl" href="B1/">
-      <span class="badge">B1</span>
-      <h2>Niveau B1</h2>
-      <p>Kapitel 1 bis 12</p>
-      <div class="stats"><span><b>872</b> Wörter</span><span><b>244</b> Verben</span><span><b>480</b> Nomen</span></div>
-      <span class="go">Öffnen &rarr;</span>
-    </a>
+    <div class="lvl">
+      <a class="top" href="B1/"><span class="badge">B1</span><span><h2>Niveau B1</h2><p>B1 Kontext · Kapitel 1 bis 12</p></span><span class="go">Öffnen &rarr;</span></a>
+      <div class="parts">
+        <a class="part" href="B1/#k1-2"><b>872</b><span>Wortschatz</span><small>Wörter aus 12 Kapiteln, mit Verbformen, Nomen und Beispielsätzen</small></a>
+        <a class="part" href="B1/#kS"><b>74</b><span>Synonyme</span><small>Wortgruppen mit gleicher Bedeutung</small></a>
+        <a class="part" href="B1/#kP"><b>60</b><span>Präpositionen</span><small>Verben mit festen Präpositionen und W-Fragen</small></a>
+        <a class="part" href="B1/#kG"><b>24</b><span>Grammatik</span><small>Themen nach dem B1-Syllabus, mit Tabellen und Übungen</small></a>
+      </div>
+    </div>
+  </div>
   <footer>© Ahsan Tanveer</footer>
 </div></main>
 </body>
