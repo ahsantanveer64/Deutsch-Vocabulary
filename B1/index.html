@@ -593,9 +593,9 @@ function render(){
   document.querySelectorAll("#seg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.k === k));
   document.querySelectorAll("#ord button").forEach(b => b.setAttribute("aria-pressed", b.dataset.o === ord));
   $("#ord").style.display = (G || cur==="S" || cur==="G") ? "none" : "";
-  $("#seg").style.display = (G || cur==="G") ? "none" : "";
+  $("#seg").style.display = (G || cur==="G" || cur==="P") ? "none" : "";
   { const ob = document.querySelectorAll("#ord button"); ob[1].textContent = cur==="P" ? "Präposition" : "Themen"; }
-  const hit = d => (k==="all" || (k==="p" ? !!d.px : k==="r" ? !!d.rf : kind(d)===k)) && (!s || (d.g+" "+d.en+" "+d.n+" "+d.ex+" "+(d.sy||"")+" "+(d.nv||"")+" "+(d.ds||"")+" "+(d.px||"")+" "+(d.al||"")).toLowerCase().includes(s));
+  const hit = d => (k==="all" || cur==="P" || (k==="p" ? !!d.px : k==="r" ? !!d.rf : kind(d)===k)) && (!s || (d.g+" "+d.en+" "+d.n+" "+d.ex+" "+(d.sy||"")+" "+(d.nv||"")+" "+(d.ds||"")+" "+(d.px||"")+" "+(d.al||"")).toLowerCase().includes(s));
   const thead = `<thead><tr><th class="w">Vokabel · Präsens</th><th class="f1">Präteritum</th><th class="f2">Partizip II</th><th class="nn">Nomen</th><th class="en">Englisch</th><th class="ex">Beispielsatz</th></tr></thead>`;
   if(G){
     const hitS = d => (d.g+" "+d.en+" "+d.n+" "+d.ex+" "+(d.sy||"")+" "+(d.nv||"")+" "+(d.ds||"")+" "+(d.px||"")+" "+(d.al||"")).toLowerCase().includes(s);
