@@ -66,8 +66,24 @@ body{background:var(--page) radial-gradient(color-mix(in srgb,var(--ink) 12%,tra
 button.fig{appearance:none;font:inherit;text-align:left;cursor:pointer;transition:border-color .15s,transform .15s,box-shadow .15s}
 button.fig:hover{border-color:var(--ink-2);transform:translateY(-1px)}
 .fig.on{border-color:var(--ink-2);box-shadow:0 0 0 2px color-mix(in srgb,var(--ink-2) 25%,transparent)}
-@media (max-width:640px){.nav .secs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;overflow:visible}.stab{font-size:12.5px;padding:8px 4px;justify-content:center}.stab .no{display:none}.chl{display:none}}
+@media (max-width:640px){.secbtns{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}.nav .secs{overflow:visible}.stab{font-size:12.5px;padding:8px 4px;justify-content:center}.stab .no{display:none}.chl{display:none}}
 
+.nav .secs{display:flex;align-items:center;gap:6px 14px}
+.secbtns{display:flex;gap:6px}
+.secs .search{margin-left:auto;width:min(380px,40vw);font-size:14px;padding:8px 12px 8px 32px}
+mark{background:#ffe9a8;color:inherit;border-radius:3px;padding:0 1px}
+.gres{display:grid;gap:10px}
+.gresh{display:flex;align-items:center;gap:10px;margin:18px 0 2px;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2)}
+.gresh span{color:var(--muted);font-weight:500;letter-spacing:.02em;text-transform:none}
+.gr1{display:block;width:100%;text-align:left;appearance:none;font:inherit;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;cursor:pointer;box-shadow:0 1px 2px rgba(16,24,40,.04);transition:border-color .15s,transform .15s}
+.gr1:hover{border-color:var(--ink-2);transform:translateY(-1px)}
+.gr1 .t{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.gr1 .t b{font-family:var(--serif);font-size:18px;font-weight:600;color:var(--title)}
+.gr1 .t .gno{font-size:12px}
+.gr1 .t .op{margin-left:auto;font-size:13px;font-weight:600;color:var(--ink-2)}
+.gr1 ul{margin:8px 0 0;padding-left:18px;font-size:14px;color:var(--text);line-height:1.5}
+.gr1 li{margin:2px 0}
+@media (max-width:640px){.nav .secs{display:block}.secs .search{width:100%;margin:8px 0 0}.gr1 .t .op{display:none}}
 /* Chapter header */
 main .wrap{display:grid;gap:16px;padding-top:28px;padding-bottom:64px}
 .chead{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px}
@@ -112,7 +128,7 @@ tr.grp:first-child td{border-top:0}
 .jump{appearance:none;display:block;margin-top:6px;border:0;background:none;padding:0;font:inherit;font-size:12px;font-weight:600;color:var(--ink-2);cursor:pointer;text-align:left}
 .jump:hover{text-decoration:underline}
 .gwrap{display:grid;grid-template-columns:260px minmax(0,1fr);gap:22px;align-items:start}
-.gnav{position:sticky;top:96px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px;max-height:calc(100vh - 120px);overflow:auto}
+.gnav{position:sticky;top:calc(var(--navh,62px) + 16px);background:#fff;border:1px solid var(--line);border-radius:16px;padding:10px;max-height:calc(100vh - 120px);overflow:auto}
 .gcat{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:12px 10px 6px}
 .gcat:first-child{padding-top:4px}
 .gitem{appearance:none;display:flex;gap:8px;align-items:baseline;width:100%;text-align:left;border:0;background:none;font:inherit;font-size:13.5px;color:var(--text);padding:7px 10px;border-radius:9px;cursor:pointer;line-height:1.35}
@@ -329,7 +345,7 @@ tr.flash td{animation:flash 2.2s ease-out}
   .title{font-size:30px}
   .figures{grid-template-columns:repeat(2,minmax(0,1fr));width:100%}
   .fig{padding:10px}.fig b{font-size:21px}
-  .search{width:100%}
+  .secs .search{width:100%}
   .sheet{background:none;border:0;box-shadow:none}
   thead{display:none}
   table,tbody,tr,td{display:block;width:auto!important}
@@ -357,7 +373,7 @@ tr.flash td{animation:flash 2.2s ease-out}
   </div>
 </header>
 <nav class="nav" aria-label="Bereiche">
-  <div class="wrap secs" role="tablist" id="secs"></div>
+  <div class="wrap secs"><div class="secbtns" role="tablist" id="secs"></div><input class="search" id="q" type="search" placeholder="Alles durchsuchen: Wörter, Synonyme, Präpositionen, Grammatik" aria-label="Alles durchsuchen" autocomplete="off"></div>
   <div class="chrow" id="chrow"><div class="wrap" role="tablist" id="tabs" aria-label="Kapitel"></div></div>
 </nav>
 <main>
@@ -378,7 +394,6 @@ tr.flash td{animation:flash 2.2s ease-out}
           <button data-k="r" aria-pressed="false">sich</button>
         </div>
         <div class="seg speed" id="speed" role="group" aria-label="Sprechtempo"><button data-r="0.95" aria-pressed="true">Normal</button><button data-r="0.7" aria-pressed="false">Langsam</button></div>
-        <input class="search" id="q" type="search" placeholder="In allen Kapiteln suchen" aria-label="Suchen">
       </div>
     </div>
     <div class="chips" id="chips"></div>
@@ -455,6 +470,11 @@ const GCATS = [
 const GORDER = [];
 { const nn = id => { const g = GR.find(x => x.id === id); const n = parseInt(g.no); return isNaN(n) ? 999 : n; }; GCATS.forEach(c => c[1].sort((x,y) => nn(x) - nn(y))); GORDER.push(...GR.map(g=>g.id).sort((x,y) => nn(x) - nn(y))); }
 const GMAIN = {k2:2, nebensatz:2, genitiv:2, pronomen:2, komparation:2, relativ:2, futur:2, stellung:2, adjektiv:3, praep:2};
+const GIDX = GR.map(g => { const clean = x => String(x).replace(/\*\*/g, "").trim(); const parts = [];
+  parts.push(clean(g.s)); g.tables.forEach(t => t.rows.forEach(r => { const c = r.map(clean).filter(Boolean); if(c.length) parts.push(c.join(" · ")); }));
+  g.pts.forEach(x => parts.push(clean(x))); g.ex.forEach(x => parts.push(clean(x))); (g.ub||[]).forEach(u => { parts.push(clean(u[0])); parts.push(clean(u[1])); }); (g.fx||[]).forEach(x => parts.push(clean(x)));
+  return { id: g.id, no: g.no, t: g.t, hf: g.hf, parts: [...new Set(parts)] }; });
+document.addEventListener("click", e => { const b = e.target.closest("[data-gopen]"); if(!b) return; gsel = b.dataset.gopen; try{ localStorage.setItem("wb-gram", gsel); }catch(err){} goTo("G"); });
 let gsel = ""; try { gsel = localStorage.getItem("wb-gram") || ""; } catch(e) {}
 document.addEventListener("click", e => { const b = e.target.closest("[data-g]"); if(!b) return; gsel = b.dataset.g; try{ localStorage.setItem("wb-gram", gsel); }catch(err){} render(); const s = document.getElementById("sheet"); if(s){ const y = s.getBoundingClientRect().top + scrollY - (innerWidth>820 ? 120 : 70); if(scrollY > y) scrollTo({top:y}); } });
 document.addEventListener("change", e => { if(e.target.id !== "gsel") return; gsel = e.target.value; try{ localStorage.setItem("wb-gram", gsel); }catch(err){} render(); });
@@ -563,14 +583,36 @@ function render(){
   document.querySelectorAll(".fig").forEach(t => t.classList.toggle("on", !G && t.dataset.s === secOf(cur)));
   if(CH.includes(cur)) lastCh = cur;
   $("#chrow").hidden = !(CH.includes(cur) && !G);
+  document.documentElement.style.setProperty("--navh", document.querySelector(".nav").offsetHeight + "px");
   document.querySelectorAll("#seg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.k === k));
   document.querySelectorAll("#ord button").forEach(b => b.setAttribute("aria-pressed", b.dataset.o === ord));
   $("#ord").style.display = (G || cur==="S" || cur==="G") ? "none" : "";
-  $("#seg").style.display = (!G && cur==="G") ? "none" : "";
+  $("#seg").style.display = (G || cur==="G") ? "none" : "";
   { const ob = document.querySelectorAll("#ord button"); ob[1].textContent = cur==="P" ? "Präposition" : "Themen"; }
   const hit = d => (k==="all" || (k==="p" ? !!d.px : k==="r" ? !!d.rf : kind(d)===k)) && (!s || (d.g+" "+d.en+" "+d.n+" "+d.ex+" "+(d.sy||"")+" "+(d.nv||"")+" "+(d.ds||"")+" "+(d.px||"")+" "+(d.al||"")).toLowerCase().includes(s));
   const thead = `<thead><tr><th class="w">Vokabel · Präsens</th><th class="f1">Präteritum</th><th class="f2">Partizip II</th><th class="nn">Nomen</th><th class="en">Englisch</th><th class="ex">Beispielsatz</th></tr></thead>`;
   if(G){
+    const hitS = d => (d.g+" "+d.en+" "+d.n+" "+d.ex+" "+(d.sy||"")+" "+(d.nv||"")+" "+(d.ds||"")+" "+(d.px||"")+" "+(d.al||"")).toLowerCase().includes(s);
+    const rows = DATA.filter(hitS);
+    const ghits = GIDX.map(g => { const sn = g.parts.filter(x => x.toLowerCase().includes(s)); const inT = g.t.toLowerCase().includes(s); return (sn.length || inT) ? {g, sn} : null; }).filter(Boolean)
+      .sort((a,b) => (b.g.t.toLowerCase().includes(s)) - (a.g.t.toLowerCase().includes(s)) || b.sn.length - a.sn.length);
+    const hl = x => { const e = esc(x), i = e.toLowerCase().indexOf(esc(s).toLowerCase()); return i < 0 ? e : e.slice(0,i) + "<mark>" + e.slice(i, i+esc(s).length) + "</mark>" + e.slice(i+esc(s).length); };
+    const cut = x => { if(x.length <= 150) return x; const i = Math.max(0, x.toLowerCase().indexOf(s) - 60); return (i ? "… " : "") + x.slice(i, i+150) + (i+150 < x.length ? " …" : ""); };
+    const secN = { W: rows.filter(d => CH.includes(d.c)).length, S: rows.filter(d => d.c==="S").length, P: rows.filter(d => d.c==="P").length, G: ghits.length };
+    const tot = secN.W + secN.S + secN.P + secN.G;
+    $("#ctitle").textContent = "Suche";
+    $("#csub").textContent = tot ? `${tot} Treffer für „${q.trim()}“ · ` + SECS.filter(x => secN[x[0]]).map(x => `${x[1]} ${secN[x[0]]}`).join(" · ") : `Keine Treffer für „${q.trim()}“`;
+    $("#chips").innerHTML = SECS.filter(x => secN[x[0]]).map(x => `<button class="chip" data-t="s${x[0]}" style="--c:var(--ink-2)"><i></i>${x[1]}<b>${secN[x[0]]}</b></button>`).join("");
+    $("#chips").hidden = SECS.filter(x => secN[x[0]]).length < 2;
+    if(!tot){ $("#sheet").innerHTML = '<div class="none">Keine Treffer in Wortschatz, Synonymen, Präpositionen oder Grammatik.</div>'; return; }
+    const groups = ALLC.map(c => [c, rows.filter(d => d.c === c)]).filter(([,r]) => r.length);
+    const seen = {};
+    const body = groups.map(([c,r]) => { const sec = secOf(c), first = !seen[sec]; seen[sec] = 1; return `<tr class="grp" id="th-${first ? "s"+sec : "k"+c}" style="--c:var(--ink-2)"><td colspan="6"><div class="gh"><i></i>${label(c)}<span>${r.length} Treffer</span></div></td></tr>` + r.map(rowHTML).join(""); }).join("");
+    const gsec = ghits.length ? `<div class="gresh" id="th-sG">Grammatik <span>${ghits.length} ${ghits.length===1?"Thema":"Themen"}</span></div><div class="gres">${ghits.map(({g,sn}) => `<button class="gr1" data-gopen="${g.id}"><span class="t"><span class="gno">${esc(g.no)}</span><b>${hl(g.t)}</b>${g.hf ? '<span class="ghf">aus dem Unterricht</span>' : ""}<span class="op">Thema öffnen &rarr;</span></span>${sn.length ? `<ul>${sn.slice(0,3).map(x => `<li>${hl(cut(x))}</li>`).join("")}${sn.length>3 ? `<li style="list-style:none;color:var(--muted)">+ ${sn.length-3} weitere Stellen</li>` : ""}</ul>` : ""}</button>`).join("")}</div>` : "";
+    $("#sheet").innerHTML = (body ? `<table>${thead}<tbody>${body}</tbody></table>` : "") + gsec;
+    return;
+  }
+  if(false){
     const rows = DATA.filter(hit);
     const groups = ALLC.map(c => [c, rows.filter(d => d.c === c)]).filter(([,r]) => r.length);
     $("#ctitle").textContent = "Suche in allen Kapiteln";
@@ -653,7 +695,7 @@ function render(){
     : rows.map(rowHTML).join("");
   $("#sheet").innerHTML = `<table>${thead}<tbody>${body}</tbody></table>`;
 }
-$("#chips").addEventListener("click", e => { const b = e.target.closest(".chip"); if(!b) return; const el = document.getElementById("th-"+b.dataset.t); if(el){ const y = el.getBoundingClientRect().top + scrollY - (innerWidth>820 ? 110 : 70); scrollTo({top:y, behavior:"smooth"}); } });
+$("#chips").addEventListener("click", e => { const b = e.target.closest(".chip"); if(!b) return; const el = document.getElementById("th-"+b.dataset.t); if(el){ const y = el.getBoundingClientRect().top + scrollY - (innerWidth>820 ? 90 : 150); scrollTo({top:y, behavior:"smooth"}); } });
 const goTo = c => { if(TTS) speechSynthesis.cancel(); playing = null; cur = c; q = ""; $("#q").value = ""; try{history.replaceState(null,"","#k"+cur)}catch(err){} render(); window.scrollTo({top:0}); };
 ["#secs","#figs"].forEach(sel => $(sel).addEventListener("click", e => { const b = e.target.closest("[data-s]"); if(b) goTo(goSec(b.dataset.s)); }));
 $("#tabs").addEventListener("click", e => { const b = e.target.closest(".tab"); if(!b) return; if(TTS) speechSynthesis.cancel(); playing = null; cur = b.dataset.c; q = ""; $("#q").value = ""; try{history.replaceState(null,"","#k"+cur)}catch(err){} render(); window.scrollTo({top:0}); });
