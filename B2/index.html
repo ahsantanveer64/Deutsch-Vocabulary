@@ -390,6 +390,16 @@ table.measure th,table.measure td{white-space:nowrap!important;width:auto!import
 .seg.mini button{font-size:12px;padding:2px 9px}
 .seg .sl{display:inline-flex;align-items:center;gap:4px;padding:0 8px 0 7px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-right:1px solid var(--line);margin-right:2px}
 .spk.spkicon{pointer-events:none;cursor:default;margin:0}
+.cheat-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin:-4px 0 12px;font-size:13px;color:var(--sub)}
+.cheat{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:10px}
+.ctile{border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--tint,#fcfbf7);break-inside:avoid}
+.ctitle{appearance:none;border:0;background:none;padding:0;font:inherit;font-weight:700;font-size:14.5px;color:var(--title);cursor:pointer;display:flex;gap:8px;align-items:baseline;text-align:left}
+.ctitle:hover{color:var(--ink-2);text-decoration:underline}
+.ctitle .gn{font-size:11.5px;color:var(--ink-2);min-width:16px}
+.ctile ul{margin:6px 0 0;padding-left:16px;font-size:13.5px;line-height:1.5;color:var(--text)}
+.ctile li{margin:2px 0}
+.ctile b{color:var(--ink)}
+@media print{.mast,.gnav,.gpn,#gsel,.cheat-top button,.foot,.copy,.flag,.chead,.gcatl{display:none!important}.gwrap{display:block!important}.gcard{border:0!important;box-shadow:none!important;padding:0!important}.cheat{grid-template-columns:1fr 1fr;gap:6px}.ctile{padding:6px 8px}.ctile ul{font-size:10.5px}body{background:#fff!important}}
 .srcb{display:inline-block;margin-left:8px;vertical-align:2px;font-size:10px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:1px 7px;border-radius:999px;border:1px solid}
 .srcb.L{color:#1d6b38;background:#e9f5ec;border-color:#bfe0c9}
 .srcb.U{color:#6a55d8;background:#efebff;border-color:#ddd4ff}
@@ -535,7 +545,7 @@ try { if (location.hash.startsWith("#q=")) { q = decodeURIComponent(location.has
 const BASE = DATA.filter(d=>d.c!=="S" && d.c!=="P");
 const nV = BASE.filter(d=>kind(d)==="v").length, nN = BASE.filter(d=>kind(d)==="n").length;
 const NP = DATA.filter(d=>d.c==="P").length;
-const SECS = [["W","Wortschatz",BASE.length,"Wörter · 13 Themen",""],["S","Synonyme",SG.length,"Synonymgruppen","v"],["P","Präpositionen",NP,"Verben + Präposition","n"],["G","Grammatik",GR.length,"Grammatikthemen","k"]].filter(x => x[0]!=="G" || GR.length);
+const SECS = [["W","Wortschatz",BASE.length,"Wörter · 13 Themen",""],["S","Synonyme",SG.length,"Synonymgruppen","v"],["P","Präpositionen",NP,"Verben + Präposition","n"],["G","Grammatik",GR.filter(g=>!g.cs).length,"Grammatikthemen","k"]].filter(x => x[0]!=="G" || GR.length);
 if(cur==="G" && !GR.length) cur = CH[0];
 let lastCh = CH.includes(cur) ? cur : CH[0];
 const secOf = c => CH.includes(c) ? "W" : c;
@@ -659,7 +669,7 @@ function render(){
   const rows = all.filter(hit);
   if(cur==="G"){
     $("#ctitle").textContent = "Grammatik B1";
-    $("#csub").textContent = `${GR.length} Themen · nach dem B1-Syllabus`;
+    $("#csub").textContent = `${GR.filter(g=>!g.cs).length} Themen · nach dem B1-Syllabus · mit Spickzettel`;
     $("#chips").innerHTML = ""; $("#chips").hidden = true;
     const byId = Object.fromEntries(GR.map(g => [g.id, g]));
     const order = GORDER;
@@ -671,8 +681,8 @@ function render(){
     const tbls = L => { let o = "", grp = []; const fl = () => { if(grp.length){ o += `<div class="gtgrid">${grp.map(tbl).join("")}</div>`; grp = []; } }; L.forEach(t => { if(t.sm) grp.push(t); else { fl(); o += tbl(t); } }); fl(); return o; };
     const nav = GORDER.map(id => `<button class="gitem" data-g="${id}" aria-current="${id===gsel}"><span class="gn">${esc(byId[id].no)}</span>${esc(byId[id].t)}</button>`).join("");
     const sel = `<select id="gsel" aria-label="Thema wählen">${GORDER.map(id => `<option value="${id}"${id===gsel?" selected":""}>${esc(byId[id].no)} · ${esc(byId[id].t)}</option>`).join("")}</select>`;
-    $("#sheet").innerHTML = `<div class="gwrap"><aside class="gnav">${nav}</aside><div class="gmain">${sel}<section class="gcard"><header><span class="gno">${esc(g.no)}</span><h3>${esc(g.t)}</h3>${g.hf ? '<span class="ghf">aus dem Unterricht</span>' : ""}<span class="gcatl">${esc(GCATS.find(c=>c[1].includes(g.id))[0])}</span></header>` +
-      `<div class="grule"><b>Regel</b>${bf(g.s)}</div>` + tbls(mainT) +
+    $("#sheet").innerHTML = `<div class="gwrap"><aside class="gnav">${nav}</aside><div class="gmain">${sel}<section class="gcard"><header><span class="gno">${esc(g.no)}</span><h3>${esc(g.t)}</h3>${g.hf ? '<span class="ghf">aus dem Unterricht</span>' : ""}<span class="gcatl">${esc((GCATS.find(c=>c[1].includes(g.id))||["Überblick"])[0])}</span></header>` +
+      (g.cs ? `<div class="cheat-top"><span>Alle ${g.cs.length} Themen auf einen Blick · Titel anklicken für das ganze Thema</span><button class="gbtn" onclick="window.print()">Drucken</button></div><div class="cheat">${g.cs.map(([id,ls]) => byId[id] ? `<div class="ctile"><button class="ctitle" data-g="${id}"><span class="gn">${esc(byId[id].no)}</span>${esc(byId[id].t)}</button><ul>${ls.map(l=>`<li>${bf(l)}</li>`).join("")}</ul></div>` : "").join("")}</div>` : `<div class="grule"><b>Regel</b>${bf(g.s)}</div>`) + tbls(mainT) +
       (g.pts.length ? `<ul class="gpts">${g.pts.map(p=>`<li>${bf(p)}</li>`).join("")}</ul>` : "") +
       (g.ex.length ? `<div class="gexh">Beispiele</div><div class="gex">${g.ex.map(x=>`<div class="sentwrap"><span>${esc(x)}</span>${spk(x,"Satz anhören")}</div>`).join("")}</div>` : "") +
       (g.ub && g.ub.length ? `<div class="gexh">Übung</div><div class="gub">${g.ub.map((u,i)=>`<div class="ubq"><span class="ubn">${i+1}</span><div>${bf(u[0]).replace(/_{2,}/g,'<span class="ubb">___</span>')}<details><summary>Lösung</summary><div class="uba">${bf(u[1])}</div></details></div></div>`).join("")}</div>` : "") +
