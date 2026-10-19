@@ -378,6 +378,16 @@ table.measure th,table.measure td{white-space:nowrap!important;width:auto!import
 .gt.gfix{width:max-content!important;max-width:none!important;min-width:0!important}
 .gt.gfix .gtd,.gt.gfix .gth{white-space:normal;overflow-wrap:anywhere}
 .gtgrid .gtw{overflow-x:auto}
+.fsz{display:inline-flex;align-items:center;gap:2px;margin-right:6px}
+.fsz span{font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-right:4px}
+.fsz button{appearance:none;border:1px solid var(--line-strong);background:#fff;font:inherit;font-size:12px;font-weight:600;color:var(--ink);min-width:30px;height:24px;padding:0 6px;border-radius:7px;cursor:pointer}
+.fsz button[data-f="1"]{font-size:14px}.fsz button[data-f="-1"]{font-size:11px}
+.fsz button:hover:not(:disabled){border-color:var(--ink-2);background:var(--ink-soft)}
+.fsz button:disabled{opacity:.4;cursor:default}
+.fsz button:focus-visible{outline:2px solid var(--der);outline-offset:2px}
+.gexh{display:flex;align-items:center;gap:12px}
+.seg.mini{padding:2px;border-radius:8px;letter-spacing:0;text-transform:none}
+.seg.mini button{font-size:12px;padding:2px 9px}
 </style>
 </head>
 <body>
@@ -388,7 +398,7 @@ table.measure th,table.measure td{white-space:nowrap!important;width:auto!import
       <h1 class="title"><span class="deflag" role="img" aria-label="Flagge Deutschland"></span>Deutsch B1: Wortschatz &amp; Grammatik</h1>
       <p class="lede">B1 Kontext · Kapitel 1 bis 12 · alles mit Beispielsätzen und Aussprache</p>
     </div>
-    <div class="who"><a class="home" href="https://ahsantanveer64.github.io/Deutsch-Vocabulary/" title="Zur Startseite"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Startseite</a><span class="author"><span class="avatar">AT</span><span class="by">Erstellt von</span><b>Ahsan Tanveer</b></span><span class="themes" id="themes"><span>Farbe</span><button class="sw" data-t="navy" style="background:#1d3c8f" title="Navy"></button><button class="sw" data-t="petrol" style="background:#0d5c63" title="Petrol &amp; Sand"></button><button class="sw" data-t="wald" style="background:#2f5d3a" title="Waldgrün"></button><button class="sw" data-t="graphit" style="background:linear-gradient(135deg,#262a33 50%,#d1495b 50%)" title="Graphit &amp; Koralle"></button><button class="sw" data-t="pflaume" style="background:#4b2a6b" title="Pflaume"></button></span></div>
+    <div class="who"><a class="home" href="https://ahsantanveer64.github.io/Deutsch-Vocabulary/" title="Zur Startseite"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Startseite</a><span class="author"><span class="avatar">AT</span><span class="by">Erstellt von</span><b>Ahsan Tanveer</b></span><span class="fsz" id="fsz" role="group" aria-label="Schriftgröße"><span>Schrift</span><button data-f="-1" title="Kleiner" aria-label="Schrift kleiner">A&minus;</button><button data-f="0" title="Standardgröße" aria-label="Standardgröße">A</button><button data-f="1" title="Größer" aria-label="Schrift größer">A+</button></span><span class="themes" id="themes"><span>Farbe</span><button class="sw" data-t="navy" style="background:#1d3c8f" title="Navy"></button><button class="sw" data-t="petrol" style="background:#0d5c63" title="Petrol &amp; Sand"></button><button class="sw" data-t="wald" style="background:#2f5d3a" title="Waldgrün"></button><button class="sw" data-t="graphit" style="background:linear-gradient(135deg,#262a33 50%,#d1495b 50%)" title="Graphit &amp; Koralle"></button><button class="sw" data-t="pflaume" style="background:#4b2a6b" title="Pflaume"></button></span></div>
   </div>
 </header>
 <nav class="nav" aria-label="Bereiche">
@@ -469,7 +479,7 @@ function speak(text, btn){
 }
 const spk = (text, lbl) => TTS ? `<button class="spk" data-say="${esc(text)}" aria-label="${lbl}" title="${lbl}">${ICON}</button>` : "";
 document.addEventListener("click", e => { const b = e.target.closest(".spk"); if(b) speak(b.dataset.say, b); });
-document.getElementById("speed").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return; rate = +b.dataset.r; document.querySelectorAll("#speed button").forEach(x => x.setAttribute("aria-pressed", x === b)); });
+document.addEventListener("click", e => { const b = e.target.closest(".speed button"); if(!b) return; rate = +b.dataset.r; document.querySelectorAll(".speed button").forEach(x => x.setAttribute("aria-pressed", +x.dataset.r === rate)); });
 if(!TTS){ document.getElementById("speed").hidden = true; document.getElementById("voiceinfo").textContent = "Dieser Browser unterstützt keine Sprachausgabe."; }
 
 let theme = "petrol";
@@ -601,11 +611,12 @@ function render(){
   document.querySelectorAll(".fig").forEach(t => t.classList.toggle("on", !G && t.dataset.s === secOf(cur)));
   if(CH.includes(cur)) lastCh = cur;
   $("#chrow").hidden = !(CH.includes(cur) && !G);
-  document.documentElement.style.setProperty("--navh", document.querySelector(".nav").offsetHeight + "px");
+  syncNav();
   document.querySelectorAll("#seg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.k === k));
   document.querySelectorAll("#ord button").forEach(b => b.setAttribute("aria-pressed", b.dataset.o === ord));
   $("#ord").style.display = (G || cur==="S" || cur==="G") ? "none" : "";
   $("#seg").style.display = (G || cur==="G" || cur==="P") ? "none" : "";
+  $("#speed").style.display = (!G && cur==="G") ? "none" : "";
   { const ob = document.querySelectorAll("#ord button"); ob[1].textContent = cur==="P" ? "Präposition" : "Themen"; }
   const hit = d => (k==="all" || cur==="P" || (k==="p" ? !!d.px : k==="r" ? !!d.rf : kind(d)===k)) && (!s || (d.g+" "+d.en+" "+d.n+" "+d.ex+" "+(d.sy||"")+" "+(d.nv||"")+" "+(d.ds||"")+" "+(d.px||"")+" "+(d.al||"")).toLowerCase().includes(s));
   const thead = `<thead><tr><th class="w">Vokabel · Präsens</th><th class="f1">Präteritum</th><th class="f2">Partizip II</th><th class="nn">Nomen</th><th class="en">Englisch</th><th class="ex">Beispielsatz</th></tr></thead>`;
@@ -661,7 +672,7 @@ function render(){
     $("#sheet").innerHTML = `<div class="gwrap"><aside class="gnav">${nav}</aside><div class="gmain">${sel}<section class="gcard"><header><span class="gno">${esc(g.no)}</span><h3>${esc(g.t)}</h3>${g.hf ? '<span class="ghf">aus dem Unterricht</span>' : ""}<span class="gcatl">${esc(GCATS.find(c=>c[1].includes(g.id))[0])}</span></header>` +
       `<div class="grule"><b>Regel</b>${bf(g.s)}</div>` + tbls(mainT) +
       (g.pts.length ? `<ul class="gpts">${g.pts.map(p=>`<li>${bf(p)}</li>`).join("")}</ul>` : "") +
-      (g.ex.length ? `<div class="gexh">Beispiele</div><div class="gex">${g.ex.map(x=>`<div class="sentwrap"><span>${esc(x)}</span>${spk(x,"Satz anhören")}</div>`).join("")}</div>` : "") +
+      (g.ex.length ? `<div class="gexh">Beispiele${TTS ? `<span class="seg speed mini" role="group" aria-label="Sprechtempo">${[["0.95","Normal"],["0.7","Langsam"]].map(([r,l]) => `<button data-r="${r}" aria-pressed="${+r===rate}">${l}</button>`).join("")}</span>` : ""}</div><div class="gex">${g.ex.map(x=>`<div class="sentwrap"><span>${esc(x)}</span>${spk(x,"Satz anhören")}</div>`).join("")}</div>` : "") +
       (g.ub && g.ub.length ? `<div class="gexh">Übung</div><div class="gub">${g.ub.map((u,i)=>`<div class="ubq"><span class="ubn">${i+1}</span><div>${bf(u[0]).replace(/_{2,}/g,'<span class="ubb">___</span>')}<details><summary>Lösung</summary><div class="uba">${bf(u[1])}</div></details></div></div>`).join("")}</div>` : "") +
       (moreT.length ? `<details class="gmore"><summary>Mehr anzeigen</summary>${tbls(moreT)}</details>` : "") +
       (g.fx && g.fx.length ? `<div class="gfx"><b>Korrigiert gegenüber Heft</b><ul>${g.fx.map(x=>`<li>${bf(x)}</li>`).join("")}</ul></div>` : "") +
@@ -746,6 +757,11 @@ document.addEventListener("pointerdown", e => {
 });
 
 // Resizable grammar tables (Excel-like): drag a header divider, double-click to fit content
+const FZS = [0.85, 0.92, 1, 1.1, 1.2, 1.32, 1.45];
+let FZ = 1; try { const f = parseFloat(localStorage.getItem("wb-font")); if(FZS.includes(f)) FZ = f; } catch(e) {}
+function setFZ(f){ FZ = f; document.querySelector("main").style.zoom = f === 1 ? "" : f; document.querySelectorAll("#fsz button").forEach(b => b.disabled = (b.dataset.f === "-1" && f === FZS[0]) || (b.dataset.f === "1" && f === FZS[FZS.length-1])); const z = document.querySelector("#fsz [data-f='0']"); if(z) z.textContent = f === 1 ? "A" : Math.round(f*100) + "%"; try{ localStorage.setItem("wb-font", f); }catch(e){} syncNav(); }
+function syncNav(){ const h = document.querySelector(".nav").offsetHeight; document.documentElement.style.setProperty("--navh", h + "px"); document.querySelector("main").style.setProperty("--navh", (h / FZ) + "px"); }
+document.getElementById("fsz").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return; const i = FZS.indexOf(FZ), d = +b.dataset.f; setFZ(d === 0 ? 1 : FZS[Math.max(0, Math.min(FZS.length-1, i + d))]); });
 let gW = {}; try { gW = JSON.parse(localStorage.getItem("wb-gcols")) || {}; } catch(e) {}
 function applyG(){
   document.querySelectorAll(".gcard .gt").forEach((gt, k) => {
@@ -755,14 +771,14 @@ function applyG(){
     ths.forEach((th, i) => { if(i < n-1 && !th.querySelector(".grz")){ const r = document.createElement("span"); r.className = "grz"; r.dataset.i = i; r.title = "Ziehen: Breite ändern · Doppelklick: an Inhalt anpassen"; th.appendChild(r); } });
   });
 }
-const gCols = gt => [...gt.children].filter(c => c.classList.contains("gth")).map(t => t.getBoundingClientRect().width);
+const gCols = gt => [...gt.children].filter(c => c.classList.contains("gth")).map(t => t.getBoundingClientRect().width / FZ);
 const gSave = (gt, w) => { gt.style.gridTemplateColumns = w.map(x => x + "px").join(" "); gt.classList.add("gfix"); gW[gt.dataset.gk] = w.map(x => Math.round(x)); try{ localStorage.setItem("wb-gcols", JSON.stringify(gW)); }catch(e){} };
 document.addEventListener("pointerdown", e => {
   const r = e.target.closest(".grz"); if(!r) return;
   e.preventDefault();
   const gt = r.closest(".gt"), i = +r.dataset.i, start = gCols(gt), x0 = e.clientX;
   r.setPointerCapture(e.pointerId); r.classList.add("on"); document.body.classList.add("resizing");
-  const move = ev => { const w = start.slice(); w[i] = Math.max(44, start[i] + ev.clientX - x0); gSave(gt, w); };
+  const move = ev => { const w = start.slice(); w[i] = Math.max(44, start[i] + (ev.clientX - x0) / FZ); gSave(gt, w); };
   const up = () => { r.removeEventListener("pointermove", move); r.removeEventListener("pointerup", up); r.classList.remove("on"); document.body.classList.remove("resizing"); };
   r.addEventListener("pointermove", move); r.addEventListener("pointerup", up);
 });
@@ -836,8 +852,9 @@ document.addEventListener("click", e => {
 document.addEventListener("keydown", e => { if(e.key === "Escape") closePop(); });
 addEventListener("resize", closePop);
 const _render = render; render = function(){ closePop(); _render(); applyCols(); };
+setFZ(FZ);
 const setNav = () => document.documentElement.style.setProperty("--navh", document.querySelector(".nav").offsetHeight + "px");
-addEventListener("resize", setNav); setNav();
+addEventListener("resize", syncNav); syncNav();
 $("#ord").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return; ord = b.dataset.o; render(); });
 render();
 </script>
