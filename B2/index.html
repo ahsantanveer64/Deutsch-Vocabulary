@@ -530,6 +530,7 @@ const THEMES = {"p1": ["Seite 1", "var(--ink-2)"], "p2": ["Seite 2", "var(--ink-
 const TORDER = Object.keys(THEMES);
 let cur = CH[0], q = "", k = "all", ord = "h";
 try { const h = location.hash.replace("#k",""); if (ALLC.includes(h)) cur = h; } catch(e) {}
+try { if (location.hash.startsWith("#q=")) { q = decodeURIComponent(location.hash.slice(3)); document.getElementById("q").value = q; } } catch(e) {}
 
 const BASE = DATA.filter(d=>d.c!=="S" && d.c!=="P");
 const nV = BASE.filter(d=>kind(d)==="v").length, nN = BASE.filter(d=>kind(d)==="n").length;
@@ -606,7 +607,7 @@ function rowHTML(d){
     </tr>`;
 }
 function render(){
-  const s = q.trim().toLowerCase();
+  const s = q.trim().toLowerCase().replace(/[äöü]/g,c=>({ä:"a",ö:"o",ü:"u"})[c]);
   const G = !!s;
   document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", !G && t.dataset.c === cur));
   document.querySelectorAll(".stab").forEach(t => t.setAttribute("aria-selected", !G && t.dataset.s === secOf(cur)));
@@ -619,15 +620,15 @@ function render(){
   $("#ord").style.display = (G || cur==="S" || cur==="G") ? "none" : "";
   $("#seg").style.display = (G || cur==="G" || cur==="P") ? "none" : "";
   { const ob = document.querySelectorAll("#ord button"); ob[1].textContent = cur==="P" ? "Präposition" : "Heft"; ob[0].textContent = cur==="P" ? "Heft" : "Gruppiert"; }
-  const hit = d => (k==="all" || cur==="P" || (k==="p" ? !!d.px : k==="r" ? !!d.rf : kind(d)===k)) && (!s || (d.g+" "+d.en+" "+d.n+" "+d.ex+" "+(d.sy||"")+" "+(d.nv||"")+" "+(d.ds||"")+" "+(d.px||"")+" "+(d.al||"")).toLowerCase().includes(s));
+  const hit = d => (k==="all" || cur==="P" || (k==="p" ? !!d.px : k==="r" ? !!d.rf : kind(d)===k)) && (!s || (d.g+" "+d.en+" "+d.n+" "+d.ex+" "+(d.sy||"")+" "+(d.nv||"")+" "+(d.ds||"")+" "+(d.px||"")+" "+(d.al||"")).toLowerCase().replace(/[äöü]/g,c=>({ä:"a",ö:"o",ü:"u"})[c]).includes(s));
   const thead = `<thead><tr><th class="w">Vokabel · Präsens</th><th class="f1">Präteritum</th><th class="f2">Partizip II</th><th class="nn">Nomen</th><th class="en">Englisch</th><th class="ex">Beispielsatz</th></tr></thead>`;
   if(G){
-    const hitS = d => (d.g+" "+d.en+" "+d.n+" "+d.ex+" "+(d.sy||"")+" "+(d.nv||"")+" "+(d.ds||"")+" "+(d.px||"")+" "+(d.al||"")).toLowerCase().includes(s);
+    const hitS = d => (d.g+" "+d.en+" "+d.n+" "+d.ex+" "+(d.sy||"")+" "+(d.nv||"")+" "+(d.ds||"")+" "+(d.px||"")+" "+(d.al||"")).toLowerCase().replace(/[äöü]/g,c=>({ä:"a",ö:"o",ü:"u"})[c]).includes(s);
     const rows = DATA.filter(hitS);
-    const ghits = GIDX.map(g => { const sn = g.parts.filter(x => x.toLowerCase().includes(s)); const inT = g.t.toLowerCase().includes(s); return (sn.length || inT) ? {g, sn} : null; }).filter(Boolean)
-      .sort((a,b) => (b.g.t.toLowerCase().includes(s)) - (a.g.t.toLowerCase().includes(s)) || b.sn.length - a.sn.length);
-    const hl = x => { const e = esc(x), i = e.toLowerCase().indexOf(esc(s).toLowerCase()); return i < 0 ? e : e.slice(0,i) + "<mark>" + e.slice(i, i+esc(s).length) + "</mark>" + e.slice(i+esc(s).length); };
-    const cut = x => { if(x.length <= 150) return x; const i = Math.max(0, x.toLowerCase().indexOf(s) - 60); return (i ? "… " : "") + x.slice(i, i+150) + (i+150 < x.length ? " …" : ""); };
+    const ghits = GIDX.map(g => { const sn = g.parts.filter(x => x.toLowerCase().replace(/[äöü]/g,c=>({ä:"a",ö:"o",ü:"u"})[c]).includes(s)); const inT = g.t.toLowerCase().replace(/[äöü]/g,c=>({ä:"a",ö:"o",ü:"u"})[c]).includes(s); return (sn.length || inT) ? {g, sn} : null; }).filter(Boolean)
+      .sort((a,b) => (b.g.t.toLowerCase().replace(/[äöü]/g,c=>({ä:"a",ö:"o",ü:"u"})[c]).includes(s)) - (a.g.t.toLowerCase().replace(/[äöü]/g,c=>({ä:"a",ö:"o",ü:"u"})[c]).includes(s)) || b.sn.length - a.sn.length);
+    const hl = x => { const e = esc(x), i = e.toLowerCase().replace(/[äöü]/g,c=>({ä:"a",ö:"o",ü:"u"})[c]).indexOf(esc(s).toLowerCase()); return i < 0 ? e : e.slice(0,i) + "<mark>" + e.slice(i, i+esc(s).length) + "</mark>" + e.slice(i+esc(s).length); };
+    const cut = x => { if(x.length <= 150) return x; const i = Math.max(0, x.toLowerCase().replace(/[äöü]/g,c=>({ä:"a",ö:"o",ü:"u"})[c]).indexOf(s) - 60); return (i ? "… " : "") + x.slice(i, i+150) + (i+150 < x.length ? " …" : ""); };
     const secN = { W: rows.filter(d => CH.includes(d.c)).length, S: rows.filter(d => d.c==="S").length, P: rows.filter(d => d.c==="P").length, G: ghits.length };
     const tot = secN.W + secN.S + secN.P + secN.G;
     $("#ctitle").textContent = "Suche";

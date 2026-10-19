@@ -54,6 +54,22 @@ a.lvl:focus-visible{outline:3px solid var(--ink-2);outline-offset:2px}
 .lvl.soon .part b{color:var(--muted)}
 .lvl.soon .part span{color:var(--sub)}
 .tag{margin-left:auto;font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);background:var(--ink-soft);padding:4px 10px;border-radius:999px;white-space:nowrap}
+.srch{margin:0 0 22px;max-width:1116px}
+#hq{width:100%;font:inherit;font-size:16px;padding:14px 16px 14px 46px;border:1px solid var(--line);border-radius:14px;background:var(--card) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%238a92a3' stroke-width='2.2' stroke-linecap='round'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E") no-repeat 16px center;box-shadow:0 1px 2px rgba(16,24,40,.05);color:var(--text)}
+#hq:focus{outline:none;border-color:var(--ink-2);box-shadow:0 0 0 3px color-mix(in srgb,var(--ink-2) 20%,transparent)}
+.hres{margin-top:10px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr))}
+.hcol{padding:6px 14px 10px}
+.hcol h3{margin:6px 0 6px;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);display:flex;justify-content:space-between;align-items:baseline}
+.hcol h3 span{font-weight:500;letter-spacing:0;text-transform:none;color:var(--muted)}
+.hit{display:block;padding:7px 8px;border-radius:9px;text-decoration:none;color:inherit}
+.hit:hover,.hit:focus-visible{background:var(--ink-soft);outline:none}
+.hit b{font-weight:600;color:var(--title)}
+.hit .sec{margin-left:8px;font-size:11px;color:var(--ink-2);background:var(--ink-soft);padding:1px 7px;border-radius:999px;white-space:nowrap}
+.hit small{display:block;color:var(--sub);font-size:13px}
+.hit mark{background:#ffe9a8;color:inherit;border-radius:3px}
+.more{display:inline-block;margin:6px 8px 0;font-size:13px;font-weight:600;color:var(--ink);text-decoration:none}
+.more:hover{text-decoration:underline}
+.none{padding:12px 16px;color:var(--sub)}
 footer{color:var(--sub);font-size:13px;padding-top:26px}
 @media (max-width:760px){.grid{grid-template-columns:1fr}h1{font-size:30px}.deflag{width:36px;height:22px;margin-right:10px}.wrap{padding:0 16px}}
 [data-theme="navy"]{--page:#d9e1f1;--ink:#1d3c8f;--ink-2:#3559c7;--ink-soft:#eaf0ff;--mast-a:#dfe7ff;--mast-b:#f7f9ff;--title:#0f1a3a;--head-bg:#eef2fb;--head-fg:#2a3a63;--head-line:#c9d3ea;--hover:#f8faff;--tint:#fbfcff;--tint-h:#f3f6ff;--syn:#2f6f8f}
@@ -78,6 +94,10 @@ footer{color:var(--sub);font-size:13px;padding-top:26px}
   <p class="lede">Lernmaterial aus meinem Kurs: Wortschatz, Synonyme, Präpositionen und Grammatik, mit Beispielen und Aussprache.</p>
 </div></header>
 <main><div class="wrap">
+  <div class="srch">
+    <input id="hq" type="search" placeholder="Wort suchen in B1 und B2, Deutsch oder Englisch …" aria-label="In B1 und B2 suchen" autocomplete="off">
+    <div id="hres" class="hres" hidden></div>
+  </div>
   <div class="grid">
     <div class="lvl">
       <a class="top" href="B1/"><span class="badge">B1</span><span><h2>Niveau B1</h2><p>B1 Kontext · Kapitel 1 bis 12</p></span><span class="go">Öffnen &rarr;</span></a>
@@ -104,6 +124,38 @@ footer{color:var(--sub);font-size:13px;padding-top:26px}
 (function(){var cur=document.documentElement.dataset.theme;
 function set(x){document.documentElement.dataset.theme=x;document.querySelectorAll(".sw").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.t===x)});try{localStorage.setItem("wb-theme",x)}catch(e){}}
 document.getElementById("themes").addEventListener("click",function(e){var b=e.target.closest(".sw");if(b)set(b.dataset.t)});set(cur);})();
+</script>
+<script>
+(function(){
+var IDX=null,inp=document.getElementById("hq"),box=document.getElementById("hres");
+var N=function(s){return (s||"").toLowerCase().replace(/ä/g,"a").replace(/ö/g,"o").replace(/ü/g,"u")};
+var E=function(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})};
+function load(){ if(IDX) return Promise.resolve(IDX); return fetch("search.json").then(function(r){return r.json()}).then(function(d){IDX=d.map(function(x){return {l:x[0],g:x[1],e:x[2],s:x[3],ng:N(x[1]),ne:N(x[2])}});return IDX}); }
+function hl(t,q){ var n=N(t),i=n.indexOf(q); if(i<0||!q) return E(t); return E(t.slice(0,i))+"<mark>"+E(t.slice(i,i+q.length))+"</mark>"+E(t.slice(i+q.length)); }
+function run(){
+  var raw=inp.value.trim(), q=N(raw);
+  if(q.length<2){ box.hidden=true; box.innerHTML=""; return; }
+  load().then(function(I){
+    var hits=I.filter(function(x){return x.ng.indexOf(q)>=0||x.ne.indexOf(q)>=0}).map(function(x){
+      var core=x.ng.replace(/^(der|die|das|sich) /,"");
+      x.r=(core.indexOf(q)===0?0:x.ng.indexOf(q)>=0?1:2)+(x.s==="Synonyme"||x.s==="Präpositionen"?0.5:0); return x;}).sort(function(a,b){return a.r-b.r||a.g.length-b.g.length});
+    var html="";
+    ["B1","B2"].forEach(function(l){
+      var h=hits.filter(function(x){return x.l===l});
+      var link=l+"/#q="+encodeURIComponent(raw);
+      html+='<div class="hcol"><h3>Niveau '+l+'<span>'+h.length+' Treffer</span></h3>';
+      if(!h.length) html+='<div class="none">Keine Treffer.</div>';
+      h.slice(0,8).forEach(function(x){ html+='<a class="hit" href="'+l+'/#q='+encodeURIComponent(x.g.replace(/\s*[\(\[][^)\]]*[\)\]]/g,"").replace(/^(der|die|das|sich) /,"").split(" / ")[0].trim())+'"><b>'+hl(x.g,q)+'</b><span class="sec">'+E(x.s)+'</span><small>'+hl(x.e,q)+'</small></a>'; });
+      if(h.length>8) html+='<a class="more" href="'+link+'">Alle '+h.length+' Treffer in '+l+' anzeigen &rarr;</a>';
+      html+='</div>';
+    });
+    box.innerHTML=html; box.hidden=false;
+  });
+}
+var t; inp.addEventListener("input",function(){clearTimeout(t);t=setTimeout(run,120)});
+inp.addEventListener("keydown",function(e){ if(e.key==="Enter"){ var a=box.querySelector(".hit"); if(a) location.href=a.href; } if(e.key==="Escape"){ inp.value=""; run(); } });
+inp.addEventListener("focus",load,{once:true});
+})();
 </script>
 </body>
 </html>
