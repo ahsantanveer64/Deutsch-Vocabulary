@@ -388,6 +388,7 @@ table.measure th,table.measure td{white-space:nowrap!important;width:auto!import
 .gexh{display:flex;align-items:center;gap:12px}
 .seg.mini{padding:2px;border-radius:8px;letter-spacing:0;text-transform:none}
 .seg.mini button{font-size:12px;padding:2px 9px}
+.seg .sl{display:inline-flex;align-items:center;gap:4px;padding:0 8px 0 7px;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-right:1px solid var(--line);margin-right:2px}
 </style>
 </head>
 <body>
@@ -422,7 +423,7 @@ table.measure th,table.measure td{white-space:nowrap!important;width:auto!import
           <button data-k="p" aria-pressed="false">+ Präp.</button>
           <button data-k="r" aria-pressed="false">sich</button>
         </div>
-        <div class="seg speed" id="speed" role="group" aria-label="Sprechtempo"><button data-r="0.95" aria-pressed="true">Normal</button><button data-r="0.7" aria-pressed="false">Langsam</button></div>
+        <div class="seg speed" id="speed" role="group" aria-label="Audio-Tempo"><span class="sl" aria-hidden="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/></svg>Audio</span><button data-r="0.95" aria-pressed="true">Normal</button><button data-r="0.7" aria-pressed="false">Langsam</button></div>
       </div>
     </div>
     <div class="chips" id="chips"></div>
