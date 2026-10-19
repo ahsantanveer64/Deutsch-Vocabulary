@@ -616,7 +616,6 @@ function render(){
   document.querySelectorAll("#ord button").forEach(b => b.setAttribute("aria-pressed", b.dataset.o === ord));
   $("#ord").style.display = (G || cur==="S" || cur==="G") ? "none" : "";
   $("#seg").style.display = (G || cur==="G" || cur==="P") ? "none" : "";
-  $("#speed").style.display = (!G && cur==="G") ? "none" : "";
   { const ob = document.querySelectorAll("#ord button"); ob[1].textContent = cur==="P" ? "Präposition" : "Themen"; }
   const hit = d => (k==="all" || cur==="P" || (k==="p" ? !!d.px : k==="r" ? !!d.rf : kind(d)===k)) && (!s || (d.g+" "+d.en+" "+d.n+" "+d.ex+" "+(d.sy||"")+" "+(d.nv||"")+" "+(d.ds||"")+" "+(d.px||"")+" "+(d.al||"")).toLowerCase().includes(s));
   const thead = `<thead><tr><th class="w">Vokabel · Präsens</th><th class="f1">Präteritum</th><th class="f2">Partizip II</th><th class="nn">Nomen</th><th class="en">Englisch</th><th class="ex">Beispielsatz</th></tr></thead>`;
@@ -672,7 +671,7 @@ function render(){
     $("#sheet").innerHTML = `<div class="gwrap"><aside class="gnav">${nav}</aside><div class="gmain">${sel}<section class="gcard"><header><span class="gno">${esc(g.no)}</span><h3>${esc(g.t)}</h3>${g.hf ? '<span class="ghf">aus dem Unterricht</span>' : ""}<span class="gcatl">${esc(GCATS.find(c=>c[1].includes(g.id))[0])}</span></header>` +
       `<div class="grule"><b>Regel</b>${bf(g.s)}</div>` + tbls(mainT) +
       (g.pts.length ? `<ul class="gpts">${g.pts.map(p=>`<li>${bf(p)}</li>`).join("")}</ul>` : "") +
-      (g.ex.length ? `<div class="gexh">Beispiele${TTS ? `<span class="seg speed mini" role="group" aria-label="Sprechtempo">${[["0.95","Normal"],["0.7","Langsam"]].map(([r,l]) => `<button data-r="${r}" aria-pressed="${+r===rate}">${l}</button>`).join("")}</span>` : ""}</div><div class="gex">${g.ex.map(x=>`<div class="sentwrap"><span>${esc(x)}</span>${spk(x,"Satz anhören")}</div>`).join("")}</div>` : "") +
+      (g.ex.length ? `<div class="gexh">Beispiele</div><div class="gex">${g.ex.map(x=>`<div class="sentwrap"><span>${esc(x)}</span>${spk(x,"Satz anhören")}</div>`).join("")}</div>` : "") +
       (g.ub && g.ub.length ? `<div class="gexh">Übung</div><div class="gub">${g.ub.map((u,i)=>`<div class="ubq"><span class="ubn">${i+1}</span><div>${bf(u[0]).replace(/_{2,}/g,'<span class="ubb">___</span>')}<details><summary>Lösung</summary><div class="uba">${bf(u[1])}</div></details></div></div>`).join("")}</div>` : "") +
       (moreT.length ? `<details class="gmore"><summary>Mehr anzeigen</summary>${tbls(moreT)}</details>` : "") +
       (g.fx && g.fx.length ? `<div class="gfx"><b>Korrigiert gegenüber Heft</b><ul>${g.fx.map(x=>`<li>${bf(x)}</li>`).join("")}</ul></div>` : "") +
