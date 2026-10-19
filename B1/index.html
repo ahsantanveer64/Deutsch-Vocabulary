@@ -487,7 +487,7 @@ const GCATS = [
   ["Nomen, Artikel & Pronomen", ["genitiv","pronomen","irgend"]],
   ["Adjektive & Präpositionen", ["adjektiv","komparation","partizip","praep"]]];
 const GORDER = [];
-{ const nn = id => { const g = GR.find(x => x.id === id); const n = parseInt(g.no); return isNaN(n) ? 999 : n; }; GCATS.forEach(c => c[1].sort((x,y) => nn(x) - nn(y))); GORDER.push(...GR.map(g=>g.id).sort((x,y) => nn(x) - nn(y))); }
+{ const nn = id => { const g = GR.find(x => x.id === id); const n = parseInt(g.no); return isNaN(n) ? -1 : n; }; GCATS.forEach(c => c[1].sort((x,y) => nn(x) - nn(y))); GORDER.push(...GR.map(g=>g.id).sort((x,y) => nn(x) - nn(y))); }
 const GMAIN = {k2:2, nebensatz:2, genitiv:2, pronomen:2, komparation:2, relativ:2, futur:2, stellung:2, adjektiv:3, praep:2};
 const GIDX = GR.map(g => { const clean = x => String(x).replace(/\*\*/g, "").trim(); const parts = [];
   parts.push(clean(g.s)); g.tables.forEach(t => t.rows.forEach(r => { const c = r.map(clean).filter(Boolean); if(c.length) parts.push(c.join(" · ")); }));
