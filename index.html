@@ -25,7 +25,7 @@ h1{font-family:var(--serif);font-weight:600;font-size:40px;line-height:1.08;marg
 .deflag{display:inline-block;width:46px;height:28px;border-radius:5px;margin-right:14px;vertical-align:-2px;background:linear-gradient(180deg,#000 0 33.34%,#dd0000 33.34% 66.67%,#ffce00 66.67%);box-shadow:0 2px 6px rgba(0,0,0,.18)}
 .lede{margin:0;color:var(--sub);font-size:15px;text-wrap:balance}
 main .wrap{padding-top:32px;padding-bottom:48px}
-.grid{display:grid;grid-template-columns:minmax(0,560px);gap:18px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:18px;align-items:start}
 .lvl{position:relative;display:block;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 22px 20px;text-decoration:none;color:inherit;box-shadow:0 1px 2px rgba(16,24,40,.05);transition:transform .15s,box-shadow .15s,border-color .15s}
 a.lvl:hover{transform:translateY(-2px);border-color:var(--ink-2);box-shadow:0 10px 24px -12px rgba(13,92,99,.45)}
 a.lvl:focus-visible{outline:3px solid var(--ink-2);outline-offset:2px}
@@ -48,6 +48,12 @@ a.lvl:focus-visible{outline:3px solid var(--ink-2);outline-offset:2px}
 @media (max-width:480px){.parts{grid-template-columns:1fr}.lvl .top .go{display:none}}
 .author .by{font-weight:400;color:var(--muted);font-size:13px;margin-right:-3px}
 .author b{font-weight:600}
+.lvl.soon{background:color-mix(in srgb,var(--card) 70%,transparent);border:1.5px dashed var(--line-strong,#d8d2c4);box-shadow:none}
+.lvl.soon .badge{background:linear-gradient(135deg,color-mix(in srgb,var(--ink) 45%,#fff),color-mix(in srgb,var(--ink-2) 45%,#fff))}
+.lvl.soon .part{border-style:dashed;color:var(--muted)}
+.lvl.soon .part b{color:var(--muted)}
+.lvl.soon .part span{color:var(--sub)}
+.tag{margin-left:auto;font-size:11.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);background:var(--ink-soft);padding:4px 10px;border-radius:999px;white-space:nowrap}
 footer{color:var(--sub);font-size:13px;padding-top:26px}
 @media (max-width:760px){.grid{grid-template-columns:1fr}h1{font-size:30px}.deflag{width:36px;height:22px;margin-right:10px}.wrap{padding:0 16px}}
 [data-theme="navy"]{--page:#d9e1f1;--ink:#1d3c8f;--ink-2:#3559c7;--ink-soft:#eaf0ff;--mast-a:#dfe7ff;--mast-b:#f7f9ff;--title:#0f1a3a;--head-bg:#eef2fb;--head-fg:#2a3a63;--head-line:#c9d3ea;--hover:#f8faff;--tint:#fbfcff;--tint-h:#f3f6ff;--syn:#2f6f8f}
@@ -80,6 +86,15 @@ footer{color:var(--sub);font-size:13px;padding-top:26px}
         <a class="part" href="B1/#kS"><b>74</b><span>Synonyme</span><small>Wortgruppen mit gleicher Bedeutung</small></a>
         <a class="part" href="B1/#kP"><b>60</b><span>Präpositionen</span><small>Verben mit festen Präpositionen und W-Fragen</small></a>
         <a class="part" href="B1/#kG"><b>20</b><span>Grammatik</span><small>Themen nach dem B1-Syllabus, mit Tabellen und Übungen</small></a>
+      </div>
+    </div>
+    <div class="lvl soon" aria-label="Niveau B2, in Vorbereitung">
+      <div class="top"><span class="badge">B2</span><span><h2>Niveau B2</h2><p>Kommt bald</p></span><span class="tag">In Vorbereitung</span></div>
+      <div class="parts">
+        <div class="part"><span>Wortschatz</span><small>Wörter nach Kapiteln, mit Verbformen, Nomen und Beispielsätzen</small></div>
+        <div class="part"><span>Synonyme</span><small>Wortgruppen mit gleicher Bedeutung</small></div>
+        <div class="part"><span>Präpositionen</span><small>Verben, Nomen und Adjektive mit festen Präpositionen</small></div>
+        <div class="part"><span>Grammatik</span><small>Themen nach dem B2-Syllabus, mit Tabellen und Übungen</small></div>
       </div>
     </div>
   </div>
