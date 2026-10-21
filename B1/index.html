@@ -411,7 +411,7 @@ table.measure th,table.measure td{white-space:nowrap!important;width:auto!import
   <div class="wrap">
     <div class="hl">
       <h1 class="title"><span class="deflag" role="img" aria-label="Flagge Deutschland"></span>Deutsch B1: Wortschatz &amp; Grammatik</h1>
-      <p class="lede">Netzwerk neu B1 · Kapitel 1 bis 12 · alles mit Beispielsätzen und Aussprache</p>
+      <p class="lede">Kapitel 1 bis 12 · nach Themen · mit Beispielsätzen und Aussprache</p>
     </div>
     <div class="who"><a class="home" href="https://ahsantanveer64.github.io/Deutsch-Vocabulary/" title="Zur Startseite"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Startseite</a><span class="author"><span class="avatar">AT</span><span class="by">Erstellt von</span><b>Ahsan Tanveer</b></span><span class="fsz" id="fsz" role="group" aria-label="Schriftgröße"><span>Schrift</span><button data-f="-1" title="Kleiner" aria-label="Schrift kleiner">A&minus;</button><button data-f="0" title="Standardgröße" aria-label="Standardgröße">A</button><button data-f="1" title="Größer" aria-label="Schrift größer">A+</button></span><span class="themes" id="themes"><span>Farbe</span><button class="sw" data-t="navy" style="background:#1d3c8f" title="Navy"></button><button class="sw" data-t="petrol" style="background:#0d5c63" title="Petrol &amp; Sand"></button><button class="sw" data-t="wald" style="background:#2f5d3a" title="Waldgrün"></button><button class="sw" data-t="graphit" style="background:linear-gradient(135deg,#262a33 50%,#d1495b 50%)" title="Graphit &amp; Koralle"></button><button class="sw" data-t="pflaume" style="background:#4b2a6b" title="Pflaume"></button></span></div>
   </div>
@@ -543,7 +543,7 @@ const THEMES = {
   zeit:["Zeit & Abfolge","#5f7d95"], woerter:["Kleine Wörter & Verbindungen","#8892a6"]
 };
 const TORDER = Object.keys(THEMES);
-let cur = "1-2", q = "", k = "all", ord = "h";
+let cur = "1-2", q = "", k = "all", ord = "t";
 try { const h = location.hash.replace("#k",""); if (ALLC.includes(h)) cur = h; } catch(e) {}
 try { if (location.hash.startsWith("#q=")) { q = decodeURIComponent(location.hash.slice(3)); document.getElementById("q").value = q; } } catch(e) {}
 
@@ -630,8 +630,9 @@ function render(){
   $("#chrow").hidden = !(CH.includes(cur) && !G);
   syncNav();
   document.querySelectorAll("#seg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.k === k));
+  if(cur!=="P") ord = "t";
   document.querySelectorAll("#ord button").forEach(b => b.setAttribute("aria-pressed", b.dataset.o === ord));
-  $("#ord").style.display = (G || cur==="S" || cur==="G") ? "none" : "";
+  $("#ord").style.display = (G || cur!=="P") ? "none" : "";
   $("#seg").style.display = (G || cur==="G" || cur==="P") ? "none" : "";
   { const ob = document.querySelectorAll("#ord button"); ob[1].textContent = cur==="P" ? "Präposition" : "Themen"; }
   const hit = d => (k==="all" || cur==="P" || (k==="p" ? !!d.px : k==="r" ? !!d.rf : kind(d)===k)) && (!s || (d.g+" "+d.en+" "+d.n+" "+d.ex+" "+(d.sy||"")+" "+(d.nv||"")+" "+(d.ds||"")+" "+(d.px||"")+" "+(d.al||"")).toLowerCase().replace(/[äöü]/g,c=>({ä:"a",ö:"o",ü:"u"})[c]).includes(s));
@@ -856,7 +857,7 @@ document.addEventListener("click", e => {
   const go = e.target.closest(".pop .go, .jump");
   if(go){
     const d = DATA[+go.dataset.i]; closePop();
-    cur = d.c; q = ""; $("#q").value = ""; k = "all"; ord = "h";
+    cur = d.c; q = ""; $("#q").value = ""; k = "all"; ord = "t";
     try{history.replaceState(null,"","#k"+cur)}catch(err){}
     render();
     const row = document.getElementById("r"+d.i);
