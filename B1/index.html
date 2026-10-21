@@ -543,7 +543,7 @@ const THEMES = {
   zeit:["Zeit & Abfolge","#5f7d95"], woerter:["Kleine Wörter & Verbindungen","#8892a6"]
 };
 const TORDER = Object.keys(THEMES);
-let cur = "1-2", q = "", k = "all", ord = "t";
+let cur = "1-2", q = "", k = "all", ord = "h";
 try { const h = location.hash.replace("#k",""); if (ALLC.includes(h)) cur = h; } catch(e) {}
 try { if (location.hash.startsWith("#q=")) { q = decodeURIComponent(location.hash.slice(3)); document.getElementById("q").value = q; } } catch(e) {}
 
@@ -630,9 +630,8 @@ function render(){
   $("#chrow").hidden = !(CH.includes(cur) && !G);
   syncNav();
   document.querySelectorAll("#seg button").forEach(b => b.setAttribute("aria-pressed", b.dataset.k === k));
-  if(cur!=="P") ord = "t";
   document.querySelectorAll("#ord button").forEach(b => b.setAttribute("aria-pressed", b.dataset.o === ord));
-  $("#ord").style.display = (G || cur!=="P") ? "none" : "";
+  $("#ord").style.display = (G || cur==="S" || cur==="G") ? "none" : "";
   $("#seg").style.display = (G || cur==="G" || cur==="P") ? "none" : "";
   { const ob = document.querySelectorAll("#ord button"); ob[1].textContent = cur==="P" ? "Präposition" : "Themen"; }
   const hit = d => (k==="all" || cur==="P" || (k==="p" ? !!d.px : k==="r" ? !!d.rf : kind(d)===k)) && (!s || (d.g+" "+d.en+" "+d.n+" "+d.ex+" "+(d.sy||"")+" "+(d.nv||"")+" "+(d.ds||"")+" "+(d.px||"")+" "+(d.al||"")).toLowerCase().replace(/[äöü]/g,c=>({ä:"a",ö:"o",ü:"u"})[c]).includes(s));
@@ -857,7 +856,7 @@ document.addEventListener("click", e => {
   const go = e.target.closest(".pop .go, .jump");
   if(go){
     const d = DATA[+go.dataset.i]; closePop();
-    cur = d.c; q = ""; $("#q").value = ""; k = "all"; ord = "t";
+    cur = d.c; q = ""; $("#q").value = ""; k = "all"; ord = "h";
     try{history.replaceState(null,"","#k"+cur)}catch(err){}
     render();
     const row = document.getElementById("r"+d.i);
