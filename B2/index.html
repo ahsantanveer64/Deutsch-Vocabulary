@@ -433,7 +433,7 @@ table.measure th,table.measure td{white-space:nowrap!important;width:auto!import
         <p id="csub"></p>
       </div>
       <div class="tools">
-                <div class="seg" id="ord" role="group" aria-label="Reihenfolge"><button data-o="h" aria-pressed="true">Gruppiert</button><button data-o="t" aria-pressed="false">My Notebook</button></div>
+                <div class="seg" id="ord" role="group" aria-label="Reihenfolge"><button data-o="h" aria-pressed="true">Themen</button><button data-o="t" aria-pressed="false" style="order:-1">My Notebook</button></div>
         <div class="seg" id="seg" role="group" aria-label="Wortart">
           <button data-k="all" aria-pressed="true">Alle</button>
           <button data-k="v" aria-pressed="false">Verben</button>
@@ -633,7 +633,7 @@ function render(){
   document.querySelectorAll("#ord button").forEach(b => b.setAttribute("aria-pressed", b.dataset.o === ord));
   $("#ord").style.display = (G || cur==="S" || cur==="G") ? "none" : "";
   $("#seg").style.display = (G || cur==="G" || cur==="P") ? "none" : "";
-  { const ob = document.querySelectorAll("#ord button"); ob[1].textContent = cur==="P" ? "Präposition" : "My Notebook"; ob[0].textContent = cur==="P" ? "My Notebook" : "Gruppiert"; }
+  { const ob = document.querySelectorAll("#ord button"); ob[1].textContent = cur==="P" ? "Präposition" : "My Notebook"; ob[0].textContent = cur==="P" ? "My Notebook" : "Themen"; ob[1].style.order = cur==="P" ? "" : "-1"; }
   const hit = d => (k==="all" || cur==="P" || (k==="p" ? !!d.px : k==="r" ? !!d.rf : kind(d)===k)) && (!s || (d.g+" "+d.en+" "+d.n+" "+d.ex+" "+(d.sy||"")+" "+(d.nv||"")+" "+(d.ds||"")+" "+(d.px||"")+" "+(d.al||"")).toLowerCase().replace(/[äöü]/g,c=>({ä:"a",ö:"o",ü:"u"})[c]).includes(s));
   const thead = `<thead><tr><th class="w">Vokabel · Präsens</th><th class="f1">Präteritum</th><th class="f2">Partizip II</th><th class="nn">Nomen</th><th class="en">Englisch</th><th class="ex">Beispielsatz</th></tr></thead>`;
   if(G){
